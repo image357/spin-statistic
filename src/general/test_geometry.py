@@ -32,8 +32,6 @@ class Test(TestCase):
         self.assertAlmostEqual(np.pi / 2, new_theta)
         self.assertAlmostEqual(0, new_phi)
 
-
-class Test(TestCase):
     def test_rotate_vectors(self):
         vectors = np.array(
             [
