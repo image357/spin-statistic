@@ -12,10 +12,13 @@ class Test(TestCase):
         self.assertTrue(np.allclose(vectors[1, :], [0, 5, 0]))
         self.assertTrue(np.allclose(vectors[2, :], [0, 0, -5]))
 
+        vectors = sphere2cart(1, 2, 3)
+        self.assertEqual((3,), vectors.shape)
+
     def test_cart2sphere(self):
         r = [1, 1, 7, 8, 9]
         theta = [0, np.pi, 1, 2, 3]
-        phi = [np.pi / 2, np.pi/2, 1, 3, 6]
+        phi = [np.pi / 2, np.pi / 2, 1, 3, 6]
 
         vectors = sphere2cart(r, theta, phi)
         new_r, new_theta, new_phi = cart2sphere(vectors)
@@ -23,3 +26,8 @@ class Test(TestCase):
         self.assertTrue(np.allclose(new_r, r))
         self.assertTrue(np.allclose(new_theta, theta))
         self.assertTrue(np.allclose(new_phi, phi))
+
+        new_r, new_theta, new_phi = cart2sphere([1, 0, 0])
+        self.assertAlmostEqual(1, new_r)
+        self.assertAlmostEqual(np.pi / 2, new_theta)
+        self.assertAlmostEqual(0, new_phi)

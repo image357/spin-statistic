@@ -19,6 +19,8 @@ def sphere2cart(r, theta, phi):
 
 def cart2sphere(vectors):
     """Returns the spherical coordinates of given cartesian vectors (x, y ,z)."""
+    vectors = np.asarray(vectors)
+
     r = np.linalg.norm(vectors, axis=-1)
     theta = np.arccos(vectors[..., 2] / r)
 
