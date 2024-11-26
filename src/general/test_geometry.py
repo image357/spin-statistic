@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from .geometry import sphere2cart, cart2sphere
+from .geometry import sphere2cart, cart2sphere, rotate_vectors
 
 import numpy as np
 
@@ -31,3 +31,35 @@ class Test(TestCase):
         self.assertAlmostEqual(1, new_r)
         self.assertAlmostEqual(np.pi / 2, new_theta)
         self.assertAlmostEqual(0, new_phi)
+
+
+class Test(TestCase):
+    def test_rotate_vectors(self):
+        vectors = np.array(
+            [
+                [1, 0, 0],
+                [0, 1, 0],
+                [0, 0, 1],
+                [1, 1, 1],
+                [1, 2, 3],
+                [1, 2, -1],
+                [3, -2, 1],
+            ],
+            dtype=np.float64
+        )
+
+        r, theta, phi = cart2sphere(vectors)
+        axis = sphere2cart(r, theta + np.pi / 2, phi)
+        angle = np.linspace(0, np.pi, vectors.shape[0])
+
+        rotated_vectors = rotate_vectors(vectors, axis, angle)
+
+        vectors /= np.sqrt((vectors ** 2).sum(-1))[..., np.newaxis]
+        rotated_vectors /= np.sqrt((rotated_vectors ** 2).sum(-1))[..., np.newaxis]
+
+        cos_alpha = np.einsum("...i,...i", rotated_vectors, vectors)
+        alpha = np.arccos(cos_alpha)
+        self.assertTrue(np.allclose(angle, alpha))
+
+        rotated_vectors = rotate_vectors([0, 0, 1], [1, 0, 0], np.pi / 2)
+        self.assertTrue(np.allclose([0, -1, 0], rotated_vectors))
