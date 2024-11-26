@@ -1,16 +1,12 @@
 from unittest import TestCase
-from src.instrument import measurement_axis, pauli_vector, spin_operator
-from src.instrument.helper import pauli_x, pauli_y, pauli_z
+
+from .spin import pauli_x, pauli_y, pauli_z
+from .spin import pauli_vector, spin_operator
+
 import numpy as np
 
 
 class Test(TestCase):
-    def test_measurement_axis(self):
-        ma = measurement_axis([0, np.pi / 2, np.pi], [0, np.pi / 2, np.pi])
-        self.assertTrue(np.allclose(ma[0, :], [0, 0, 1]))
-        self.assertTrue(np.allclose(ma[1, :], [0, 1, 0]))
-        self.assertTrue(np.allclose(ma[2, :], [0, 0, -1]))
-
     def test_pauli_vector(self):
         pv = pauli_vector()
         self.assertEqual(pv.shape, (2, 2, 3))

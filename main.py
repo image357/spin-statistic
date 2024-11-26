@@ -1,14 +1,14 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from src.instrument.helper import measurement_axis
-from src.instrument.measurement import project_onto_spin_basis
+from src.general import sphere2cart
+from src.instrument import project_onto_spin_basis
 from src.random import coin_flip
 
 n_angles = 100
 theta = np.linspace(0, np.pi, n_angles)
 phi = np.pi / 3
-mas = measurement_axis(phi, theta)
+mas = sphere2cart(1, theta, phi)
 
 n_samples_per_angle = 100000
 

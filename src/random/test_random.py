@@ -1,5 +1,7 @@
 from unittest import TestCase
-from src.random import uniform_unit_vectors, coin_flip, random_select
+
+from .random import uniform_unit_vectors, coin_flip, random_select
+
 import numpy as np
 
 

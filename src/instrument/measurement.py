@@ -1,6 +1,7 @@
-from .helper import spin_operator
-from src.random import random_select
 import numpy as np
+
+from src.general import spin_operator
+from src.random import random_select
 
 
 def project_onto_axis(unit_vectors, axis_vector):
@@ -35,8 +36,8 @@ def project_onto_spin_basis(state, axis_vector):
     eigvals, eigvecs = np.linalg.eig(so)
 
     # calculate spin projections
-    p0 = np.abs(np.einsum("i,...i", eigvecs[:, 0].conj(), spin_state))**2
-    p1 = np.abs(np.einsum("i,...i", eigvecs[:, 1].conj(), spin_state))**2
+    p0 = np.abs(np.einsum("i,...i", eigvecs[:, 0].conj(), spin_state)) ** 2
+    p1 = np.abs(np.einsum("i,...i", eigvecs[:, 1].conj(), spin_state)) ** 2
 
     # sample p0
     selector0 = random_select(p0)

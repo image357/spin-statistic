@@ -12,6 +12,7 @@ def uniform_unit_vectors(num):
 
 
 def coin_flip(num):
+    """Returns the result of num coin flips as either 1 or -1."""
     coins = np.random.randint(0, 2, size=(num, 1))
     return 2 * coins - 1
 
