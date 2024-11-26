@@ -18,6 +18,3 @@ def spin_operator(axis_vector):
     # project pauli vector
     product = pauli_vector() * axis_vector
     return product.sum(-1)
-
-def spinor(axis_vector, state):
-    return -1
