@@ -21,13 +21,12 @@ alpha = np.linspace(0, np.pi, n_angles)
 # construct right measurement axis from rotation
 measurement_axis_right = rotate_vector(measurement_axis_left, rotation_axis, alpha)
 
-# this is an implicit requirement from bell
-source_axis = measurement_axis_left
-
 # check angles
-for i in range(n_angles):
-    assert np.allclose((measurement_axis_left * measurement_axis_right[i]).sum(),
-                       np.cos(alpha[i])), "error: measurement axis construction"
+cos_alpha = (measurement_axis_right * measurement_axis_left).sum(-1)
+assert np.allclose(alpha, np.arccos(cos_alpha))
+
+# this is an implicit requirement
+source_axis = measurement_axis_left
 
 # run experiments
 for i in range(n_angles):
