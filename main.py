@@ -1,17 +1,32 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from src.general import sphere2cart, spinor
+from src.general import sphere2cart, cart2sphere, rotate_vector, spinor
 from src.instrument import project_onto_spin_basis
 from src.random import coin_flip
 
+# statistics
 n_angles = 100
 n_samples_per_angle = 100000
 
-theta = np.linspace(0, np.pi, n_angles)
-phi = np.pi / 3
-mas = sphere2cart(1, theta, phi)
+# left measurement axis
+measurement_axis_left = sphere2cart(1, 0, 0)
 
+# construct rotation axis
+r, theta, phi = cart2sphere(measurement_axis_left)
+theta = theta + np.pi / 2
+rotation_axis = sphere2cart(1, theta, phi)
+alpha = np.linspace(0, np.pi, n_angles)
+
+# construct right measurement axis from rotation
+measurement_axis_right = rotate_vector(measurement_axis_left, rotation_axis, alpha)
+
+# check angles
+for i in range(n_angles):
+    assert np.allclose((measurement_axis_left * measurement_axis_right[i]).sum(),
+                       np.cos(alpha[i])), "error: measurement axis construction"
+
+# run experiments
 for i in range(n_angles):
     # sample left "hidden" variables
     left = coin_flip(n_samples_per_angle)
@@ -24,8 +39,8 @@ for i in range(n_angles):
     right_spinor = spinor([0, 0, 1], right)
 
     # perform measurement projections
-    pj_left = project_onto_spin_basis(left_spinor, mas[i])
-    pj_right = project_onto_spin_basis(right_spinor, [0, 0, 1])
+    pj_left = project_onto_spin_basis(left_spinor, measurement_axis_left)
+    pj_right = project_onto_spin_basis(right_spinor, measurement_axis_right[i])
 
     # count left and right measurements
     sum_left_up = np.sum(pj_left == 1)
@@ -53,29 +68,29 @@ for i in range(n_angles):
 
     # plots left and right
     plt.figure("left up")
-    plt.plot(theta[i], p_left_up, "ro")
+    plt.plot(alpha[i], p_left_up, "ro")
 
     plt.figure("left down")
-    plt.plot(theta[i], p_left_down, "ro")
+    plt.plot(alpha[i], p_left_down, "ro")
 
     plt.figure("right up")
-    plt.plot(theta[i], p_right_up, "ro")
+    plt.plot(alpha[i], p_right_up, "ro")
 
     plt.figure("right down")
-    plt.plot(theta[i], p_right_down, "ro")
+    plt.plot(alpha[i], p_right_down, "ro")
 
     # plot correlation
     plt.figure("up up")
-    plt.plot(theta[i], p_up_up, "ro")
+    plt.plot(alpha[i], p_up_up, "ro")
 
     plt.figure("up down")
-    plt.plot(theta[i], p_up_down, "ro")
+    plt.plot(alpha[i], p_up_down, "ro")
 
     plt.figure("down up")
-    plt.plot(theta[i], p_down_up, "ro")
+    plt.plot(alpha[i], p_down_up, "ro")
 
     plt.figure("down down")
-    plt.plot(theta[i], p_down_down, "ro")
+    plt.plot(alpha[i], p_down_down, "ro")
 
 # finish plots
 plt.figure("left up")
@@ -83,59 +98,59 @@ plt.title("left up")
 plt.gca().set_ylim([0, 1])
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
-y = 1 / 2 * np.ones_like(theta)
-plt.plot(theta, y, linewidth=3)
+y = 1 / 2 * np.ones_like(alpha)
+plt.plot(alpha, y, linewidth=3)
 
 plt.figure("left down")
 plt.title("left down")
 plt.gca().set_ylim([0, 1])
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
-y = 1 / 2 * np.ones_like(theta)
-plt.plot(theta, y, linewidth=3)
+y = 1 / 2 * np.ones_like(alpha)
+plt.plot(alpha, y, linewidth=3)
 
 plt.figure("right up")
 plt.title("right up")
 plt.gca().set_ylim([0, 1])
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
-y = 1 / 2 * np.ones_like(theta)
-plt.plot(theta, y, linewidth=3)
+y = 1 / 2 * np.ones_like(alpha)
+plt.plot(alpha, y, linewidth=3)
 
 plt.figure("right down")
 plt.title("right down")
 plt.gca().set_ylim([0, 1])
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
-y = 1 / 2 * np.ones_like(theta)
-plt.plot(theta, y, linewidth=3)
+y = 1 / 2 * np.ones_like(alpha)
+plt.plot(alpha, y, linewidth=3)
 
 plt.figure("up up")
 plt.title("p_up_up")
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
-y = 1 / 4 * (1 - np.cos(theta))
-plt.plot(theta, y, linewidth=3)
+y = 1 / 4 * (1 - np.cos(alpha))
+plt.plot(alpha, y, linewidth=3)
 
 plt.figure("up down")
 plt.title("p_up_down")
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
-y = 1 / 4 * (1 + np.cos(theta))
-plt.plot(theta, y, linewidth=3)
+y = 1 / 4 * (1 + np.cos(alpha))
+plt.plot(alpha, y, linewidth=3)
 
 plt.figure("down up")
 plt.title("p_down_up")
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
-y = 1 / 4 * (1 + np.cos(theta))
-plt.plot(theta, y, linewidth=3)
+y = 1 / 4 * (1 + np.cos(alpha))
+plt.plot(alpha, y, linewidth=3)
 
 plt.figure("down down")
 plt.title("p_down_down")
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
-y = 1 / 4 * (1 - np.cos(theta))
-plt.plot(theta, y, linewidth=3)
+y = 1 / 4 * (1 - np.cos(alpha))
+plt.plot(alpha, y, linewidth=3)
 
 plt.show()
