@@ -1,16 +1,16 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from src.general import sphere2cart
+from src.general import sphere2cart, spinor
 from src.instrument import project_onto_spin_basis
 from src.random import coin_flip
 
 n_angles = 100
+n_samples_per_angle = 100000
+
 theta = np.linspace(0, np.pi, n_angles)
 phi = np.pi / 3
 mas = sphere2cart(1, theta, phi)
-
-n_samples_per_angle = 100000
 
 for i in range(n_angles):
     # sample left "hidden" variables
@@ -19,9 +19,13 @@ for i in range(n_angles):
     # (anti-)correlate right and left measurements
     right = -left
 
+    # get spinors
+    left_spinor = spinor([0, 0, 1], left)
+    right_spinor = spinor([0, 0, 1], right)
+
     # perform measurement projections
-    pj_left = project_onto_spin_basis(left, mas[i])
-    pj_right = project_onto_spin_basis(right, [0, 0, 1])
+    pj_left = project_onto_spin_basis(left_spinor, mas[i])
+    pj_right = project_onto_spin_basis(right_spinor, [0, 0, 1])
 
     # count left and right measurements
     sum_left_up = np.sum(pj_left == 1)
@@ -79,7 +83,7 @@ plt.title("left up")
 plt.gca().set_ylim([0, 1])
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
-y = 1/2 * np.ones_like(theta)
+y = 1 / 2 * np.ones_like(theta)
 plt.plot(theta, y, linewidth=3)
 
 plt.figure("left down")
@@ -87,7 +91,7 @@ plt.title("left down")
 plt.gca().set_ylim([0, 1])
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
-y = 1/2 * np.ones_like(theta)
+y = 1 / 2 * np.ones_like(theta)
 plt.plot(theta, y, linewidth=3)
 
 plt.figure("right up")
@@ -95,7 +99,7 @@ plt.title("right up")
 plt.gca().set_ylim([0, 1])
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
-y = 1/2 * np.ones_like(theta)
+y = 1 / 2 * np.ones_like(theta)
 plt.plot(theta, y, linewidth=3)
 
 plt.figure("right down")
@@ -103,7 +107,7 @@ plt.title("right down")
 plt.gca().set_ylim([0, 1])
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
-y = 1/2 * np.ones_like(theta)
+y = 1 / 2 * np.ones_like(theta)
 plt.plot(theta, y, linewidth=3)
 
 plt.figure("up up")

@@ -64,13 +64,17 @@ class Test(TestCase):
         for i in range(projection.shape[0]):
             self.assertEqual(projection[i], expected[i])
 
-    def test_project_from_pauli_vector(self):
-        projection = project_onto_spin_basis([1, 1, -1], [0, 0, 1])
-        expected = [1, 1, -1]
+    def test_project_onto_spin_basis(self):
+        spinor = [
+            [1, 0],
+            [0, 1],
+        ]
+        projection = project_onto_spin_basis(spinor, [0, 0, 1])
+        expected = [1, -1]
         for i in range(projection.shape[0]):
             self.assertEqual(projection[i], expected[i])
 
-        projection = project_onto_spin_basis([1, 1, -1], [0, 0, -1])
-        expected = [-1, -1, 1]
+        projection = project_onto_spin_basis(spinor, [0, 0, -1])
+        expected = [-1, 1]
         for i in range(projection.shape[0]):
             self.assertEqual(projection[i], expected[i])
