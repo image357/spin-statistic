@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.general import spin_operator
+from src.general import spinor_up, spinor_down
 from src.random import random_select
 
 
@@ -32,20 +32,18 @@ def project_onto_spin_basis(state, axis):
     down_state[:, 0] = 0
     spin_state = (state == 1) * up_state + (state == -1) * down_state
 
-    # construct projection basis
-    so = spin_operator(axis)
-    eigvals, eigvecs = np.linalg.eig(so)
-
     # calculate spin projections
-    p0 = np.abs(np.einsum("i,...i", eigvecs[:, 0].conj(), spin_state)) ** 2
-    p1 = np.abs(np.einsum("i,...i", eigvecs[:, 1].conj(), spin_state)) ** 2
+    axis_up = spinor_up(axis)
+    p_up = np.abs(np.einsum("i,...i", axis_up, spin_state)) ** 2
 
-    # sample p0
-    selector0 = random_select(p0)
-    selector1 = np.logical_not(selector0)
+    axis_down = spinor_down(axis)
+    p_down = np.abs(np.einsum("i,...i", axis_down, spin_state)) ** 2
+
+    # sample p_up
+    selector_up = random_select(p_up)
+    selector_down = np.logical_not(selector_up)
 
     # project based on selection
-    projection = selector0 * np.real(eigvals[0]) + selector1 * np.real(eigvals[1])
-    projection = 2 * np.heaviside(projection, 0) - 1
+    projection = selector_up * 1 + selector_down * (-1)
 
     return projection.astype(np.int64)
