@@ -90,71 +90,49 @@ for i in range(n_angles):
     p_down_up[i] = sum_down_up / n_samples_per_angle
     p_down_down[i] = sum_down_down / n_samples_per_angle
 
-# plots
-for i in range(n_angles):
-    # plots left and right
-    plt.figure("left up")
-    plt.plot(alpha[i], p_left_up[i], "ro")
-
-    plt.figure("left down")
-    plt.plot(alpha[i], p_left_down[i], "ro")
-
-    plt.figure("right up")
-    plt.plot(alpha[i], p_right_up[i], "ro")
-
-    plt.figure("right down")
-    plt.plot(alpha[i], p_right_down[i], "ro")
-
-    # plot correlation
-    plt.figure("up up")
-    plt.plot(alpha[i], p_up_up[i], "ro")
-
-    plt.figure("up down")
-    plt.plot(alpha[i], p_up_down[i], "ro")
-
-    plt.figure("down up")
-    plt.plot(alpha[i], p_down_up[i], "ro")
-
-    plt.figure("down down")
-    plt.plot(alpha[i], p_down_down[i], "ro")
-
-# finish plots
+# plots left and right
 plt.figure("left up")
-plt.title("left up")
 plt.gca().set_ylim([0, 1])
+plt.title("left up")
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
+plt.plot(alpha, p_left_up, "ro")
 y = 1 / 2 * np.ones_like(alpha)
 plt.plot(alpha, y, linewidth=3)
 
 plt.figure("left down")
-plt.title("left down")
 plt.gca().set_ylim([0, 1])
+plt.title("left down")
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
+plt.plot(alpha, p_left_down, "ro")
 y = 1 / 2 * np.ones_like(alpha)
 plt.plot(alpha, y, linewidth=3)
 
 plt.figure("right up")
-plt.title("right up")
 plt.gca().set_ylim([0, 1])
+plt.title("right up")
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
+plt.plot(alpha, p_right_up, "ro")
 y = 1 / 2 * np.ones_like(alpha)
 plt.plot(alpha, y, linewidth=3)
 
 plt.figure("right down")
-plt.title("right down")
 plt.gca().set_ylim([0, 1])
+plt.title("right down")
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
+plt.plot(alpha, p_right_down, "ro")
 y = 1 / 2 * np.ones_like(alpha)
 plt.plot(alpha, y, linewidth=3)
 
+# plot correlation
 plt.figure("up up")
 plt.title("p_up_up")
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
+plt.plot(alpha, p_up_up, "ro")
 y = 1 / 4 * (1 - np.cos(alpha))
 plt.plot(alpha, y, linewidth=3)
 
@@ -162,6 +140,7 @@ plt.figure("up down")
 plt.title("p_up_down")
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
+plt.plot(alpha, p_up_down, "ro")
 y = 1 / 4 * (1 + np.cos(alpha))
 plt.plot(alpha, y, linewidth=3)
 
@@ -169,6 +148,7 @@ plt.figure("down up")
 plt.title("p_down_up")
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
+plt.plot(alpha, p_down_up, "ro")
 y = 1 / 4 * (1 + np.cos(alpha))
 plt.plot(alpha, y, linewidth=3)
 
@@ -176,6 +156,7 @@ plt.figure("down down")
 plt.title("p_down_down")
 plt.xlabel("angle between measurement axis")
 plt.ylabel("probability")
+plt.plot(alpha, p_down_down, "ro")
 y = 1 / 4 * (1 - np.cos(alpha))
 plt.plot(alpha, y, linewidth=3)
 
