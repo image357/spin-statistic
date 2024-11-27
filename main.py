@@ -19,7 +19,7 @@ for i in range(n_angles):
     # (anti-)correlate right and left measurements
     right = -left
 
-    # get spinors
+    # get spinor
     left_spinor = spinor([0, 0, 1], left)
     right_spinor = spinor([0, 0, 1], right)
 
