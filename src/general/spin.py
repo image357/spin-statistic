@@ -10,11 +10,11 @@ def pauli_vector():
     return np.stack([pauli_x, pauli_y, pauli_z], axis=-1)
 
 
-def spin_operator(axis_vector):
+def spin_operator(axis):
     """Returns the spin operator along a given axis vector."""
-    axis_vector = np.array(axis_vector, dtype=np.float64)
-    axis_vector /= np.linalg.norm(axis_vector)
+    axis = np.array(axis, dtype=np.float64)
+    axis /= np.linalg.norm(axis)
 
     # project pauli vector
-    product = pauli_vector() * axis_vector
+    product = pauli_vector() * axis
     return product.sum(-1)

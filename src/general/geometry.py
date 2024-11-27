@@ -17,37 +17,37 @@ def sphere2cart(r, theta, phi):
     return axis_vector
 
 
-def cart2sphere(vectors):
+def cart2sphere(vector):
     """Returns the spherical coordinates of given cartesian vectors (x, y ,z)."""
-    vectors = np.asarray(vectors, dtype=np.float64)
+    vector = np.asarray(vector, dtype=np.float64)
 
-    r = np.linalg.norm(vectors, axis=-1)
-    theta = np.arccos(vectors[..., 2] / r)
+    r = np.linalg.norm(vector, axis=-1)
+    theta = np.arccos(vector[..., 2] / r)
 
-    xy_vectors = vectors[..., :2]
-    r_xy = np.linalg.norm(xy_vectors, axis=-1)[..., np.newaxis]
+    xy_vector = vector[..., :2]
+    r_xy = np.linalg.norm(xy_vector, axis=-1)[..., np.newaxis]
     r_xy[r_xy == 0] = 1
-    xy_unit_vectors = xy_vectors / r_xy
+    xy_unit_vector = xy_vector / r_xy
 
-    cos_phi = np.einsum("...i,i", xy_unit_vectors, np.array([1, 0]))
+    cos_phi = np.einsum("...i,i", xy_unit_vector, np.array([1, 0]))
     phi = np.arccos(cos_phi)
-    phase_shift = 2 * (vectors[..., 1] < 0) - 1
+    phase_shift = 2 * (vector[..., 1] < 0) - 1
     phi = (2 * np.pi - phase_shift * phi) % (2 * np.pi)
 
     return r, theta, phi
 
 
-def rotate_vectors(vectors, axis, angle):
-    """Returns the rotated vectors of a given axis and angle."""
-    vectors = np.asarray(vectors, dtype=np.float64)
+def rotate_vector(vector, axis, angle):
+    """Returns the rotated vector of a given rotation-axis and angle."""
+    vector = np.asarray(vector, dtype=np.float64)
     axis = np.asarray(axis, dtype=np.float64)
     angle = np.asarray(angle, dtype=np.float64)[..., np.newaxis]
 
     axis /= np.sqrt((axis ** 2).sum(-1))[..., np.newaxis]
 
-    rotated_vectors = (
-            vectors + np.sin(angle) * np.cross(axis, vectors) +
-            (1 - np.cos(angle)) * np.cross(axis, np.cross(axis, vectors))
+    rotated_vector = (
+            vector + np.sin(angle) * np.cross(axis, vector) +
+            (1 - np.cos(angle)) * np.cross(axis, np.cross(axis, vector))
     )
 
-    return rotated_vectors
+    return rotated_vector

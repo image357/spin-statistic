@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def uniform_unit_vectors(num):
+def uniform_unit_vector(num):
     """Return num uniformly distributed vectors with unit length.
 
     See also: https://mathworld.wolfram.com/SpherePointPicking.html

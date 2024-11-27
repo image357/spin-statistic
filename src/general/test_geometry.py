@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from .geometry import sphere2cart, cart2sphere, rotate_vectors
+from .geometry import sphere2cart, cart2sphere, rotate_vector
 
 import numpy as np
 
@@ -50,7 +50,7 @@ class Test(TestCase):
         axis = sphere2cart(r, theta + np.pi / 2, phi)
         angle = np.linspace(0, np.pi, vectors.shape[0])
 
-        rotated_vectors = rotate_vectors(vectors, axis, angle)
+        rotated_vectors = rotate_vector(vectors, axis, angle)
 
         vectors /= np.sqrt((vectors ** 2).sum(-1))[..., np.newaxis]
         rotated_vectors /= np.sqrt((rotated_vectors ** 2).sum(-1))[..., np.newaxis]
@@ -59,5 +59,5 @@ class Test(TestCase):
         alpha = np.arccos(cos_alpha)
         self.assertTrue(np.allclose(angle, alpha))
 
-        rotated_vectors = rotate_vectors([0, 0, 1], [1, 0, 0], np.pi / 2)
-        self.assertTrue(np.allclose([0, -1, 0], rotated_vectors))
+        rotated_vector = rotate_vector([0, 0, 1], [1, 0, 0], np.pi / 2)
+        self.assertTrue(np.allclose([0, -1, 0], rotated_vector))
