@@ -21,6 +21,9 @@ alpha = np.linspace(0, np.pi, n_angles)
 # construct right measurement axis from rotation
 measurement_axis_right = rotate_vector(measurement_axis_left, rotation_axis, alpha)
 
+# this is an implicit requirement from bell
+source_axis = measurement_axis_left
+
 # check angles
 for i in range(n_angles):
     assert np.allclose((measurement_axis_left * measurement_axis_right[i]).sum(),
@@ -35,8 +38,8 @@ for i in range(n_angles):
     right = -left
 
     # get spinor
-    left_spinor = spinor([0, 0, 1], left)
-    right_spinor = spinor([0, 0, 1], right)
+    left_spinor = spinor(source_axis, left)
+    right_spinor = spinor(source_axis, right)
 
     # perform measurement projections
     pj_left = project_onto_spin_basis(left_spinor, measurement_axis_left)
