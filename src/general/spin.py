@@ -40,3 +40,15 @@ def spinor_down(axis):
     component_2 = -np.exp(1j * phi) * np.cos(theta / 2)
 
     return np.stack([component_1, component_2], axis=-1)
+
+
+def spinor(axis, state):
+    """Returns the spin up or spin down spinor relative to a given state depending on the input state -1 or 1."""
+    up_state = state == 1
+    down_state = state == -1
+
+    up = spinor_up(axis)
+    down = spinor_down(axis)
+
+    s = up_state * up + down_state * down
+    return s

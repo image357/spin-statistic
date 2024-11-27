@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from .spin import pauli_x, pauli_y, pauli_z
 from .spin import pauli_vector, spin_operator
-from .spin import spinor_up, spinor_down
+from .spin import spinor_up, spinor_down, spinor
 
 import numpy as np
 
@@ -52,3 +52,31 @@ class Test(TestCase):
 
             self.assertTrue(np.allclose(up[i], 1 * so_up))
             self.assertTrue(np.allclose(down[i], -1 * so_down))
+
+    def test_spinor(self):
+        axis = np.array([
+            [1, 0, 0],
+            [0, 1, 0],
+            [0, 0, 1],
+            [1, 1, 1],
+        ])
+        state = [1, -1, 1, -1]
+
+        s = spinor(axis, state)
+        self.assertEqual((4, 2), s.shape)
+
+        s = spinor([0, 0, 1], 1)
+        self.assertAlmostEqual(s[0], 1.0 + 0.0j)
+        self.assertAlmostEqual(s[1], 0.0 + 0.0j)
+
+        s = spinor([0, 0, 1], -1)
+        self.assertAlmostEqual(s[0], 0.0 + 0.0j)
+        self.assertAlmostEqual(s[1], 0.0 - 1.0j)
+
+        s = spinor([0, 0, -1], 1)
+        self.assertAlmostEqual(s[0], 0.0 + 0.0j)
+        self.assertAlmostEqual(s[1], 0.0 + 1.0j)
+
+        s = spinor([0, 0, -1], -1)
+        self.assertAlmostEqual(s[0], 1.0 + 0.0j)
+        self.assertAlmostEqual(s[1], 0.0 + 0.0j)
