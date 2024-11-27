@@ -25,11 +25,11 @@ def project_onto_spin_basis(spinor, axis):
     axis /= np.linalg.norm(axis)
 
     # calculate spin up probability (along given axis)
-    axis_up = spinor_up(axis)
-    p_up = np.abs(np.einsum("i,...i", axis_up, spinor)) ** 2
+    axis_spinor_up = spinor_up(axis)
+    p_up = np.abs(np.einsum("i,...i", axis_spinor_up, spinor)) ** 2
 
-    axis_down = spinor_down(axis)
-    p_down = np.abs(np.einsum("i,...i", axis_down, spinor)) ** 2
+    axis_spinor_down = spinor_down(axis)
+    p_down = np.abs(np.einsum("i,...i", axis_spinor_down, spinor)) ** 2
     assert np.allclose(p_up + p_down, 1.0), "error: probabilities of spin projection don't add up to 1.0"
 
     # sample p_up
