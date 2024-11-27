@@ -18,7 +18,7 @@ def project_onto_axis(unit_vector, axis):
 
 
 def project_onto_spin_basis(spinor, axis):
-    """Returns the sign of the projection of the spin operator eigen-basis along the measurement axis."""
+    """Returns the sign of the projection of the spinor along the measurement axis."""
     # prepare inputs
     spinor = np.asarray(spinor, dtype=np.complex128)
     axis = np.asarray(axis, dtype=np.float64)
