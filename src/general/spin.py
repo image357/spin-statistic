@@ -14,7 +14,7 @@ def pauli_vector():
 
 def spin_operator(axis):
     """Returns the spin operator along a given axis vector."""
-    axis = np.array(axis, dtype=np.float64)
+    axis = np.asarray(axis, dtype=np.float64)
     axis /= np.linalg.norm(axis)
 
     # project pauli vector

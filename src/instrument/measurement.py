@@ -6,7 +6,8 @@ from src.random import random_select
 
 def project_onto_axis(unit_vector, axis):
     """Returns the sign of the projection of the unit_vectors along the measurement axis."""
-    axis = np.array(axis, dtype=np.float64)
+    unit_vector = np.asarray(unit_vector, dtype=np.float64)
+    axis = np.asarray(axis, dtype=np.float64)
     axis /= np.linalg.norm(axis)
     product = unit_vector * axis
     cos_theta = product.sum(-1)
@@ -17,11 +18,11 @@ def project_onto_axis(unit_vector, axis):
 def project_onto_spin_basis(state, axis):
     """Returns the sign of the projection of the spin operator eigen-basis along the measurement axis."""
     # prepare inputs
-    state = np.array(state, dtype=np.float64)
+    state = np.asarray(state, dtype=np.int64)
     if state.ndim != 2:
         state = state[..., np.newaxis]
 
-    axis = np.array(axis, dtype=np.float64)
+    axis = np.asarray(axis, dtype=np.float64)
     axis /= np.linalg.norm(axis)
 
     # create (1,0) and (0,1) spin-vectors from state 1 or -1

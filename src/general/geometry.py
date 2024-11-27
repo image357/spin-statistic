@@ -29,7 +29,7 @@ def cart2sphere(vector):
     r_xy[r_xy == 0] = 1
     xy_unit_vector = xy_vector / r_xy
 
-    cos_phi = np.einsum("...i,i", xy_unit_vector, np.array([1, 0]))
+    cos_phi = np.einsum("...i,i", xy_unit_vector, np.array([1, 0], dtype=np.float64))
     phi = np.arccos(cos_phi)
     phase_shift = 2 * (vector[..., 1] < 0) - 1
     phi = (2 * np.pi - phase_shift * phi) % (2 * np.pi)

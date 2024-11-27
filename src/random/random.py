@@ -19,7 +19,7 @@ def coin_flip(num):
 
 def random_select(p):
     """Return a truth table based on a random selection with probability p."""
-    p = np.array(p, dtype=np.float64)
+    p = np.asarray(p, dtype=np.float64)
     vals = np.random.random(size=p.shape)
     selection = np.less(vals, p)
     return selection
